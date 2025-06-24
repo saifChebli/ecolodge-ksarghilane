@@ -20,6 +20,7 @@
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-i18next": "^15.5.3",
+    "swiper": "^11.2.8",
     "zod": "^3.25.64"
   },
   "devDependencies": {

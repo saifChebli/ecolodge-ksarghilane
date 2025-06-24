@@ -1,6 +1,9 @@
 import Navbar from "@/components/Navbar";
 import "./globals.css";
 import { Inter , Allura } from "next/font/google";
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
 
 const inter = Inter({
   weight: "400",
