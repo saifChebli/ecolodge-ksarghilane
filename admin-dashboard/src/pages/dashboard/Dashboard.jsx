@@ -96,21 +96,6 @@ const Dashboard = () => {
           ))}
         </div>
 
-        {/* Quick Actions */}
-        {/* <QuickActions /> */}
-
-        {/* Main Content Grid */}
-        <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
-          {/* Recent Bookings - Takes 2 columns on xl screens */}
-          <div className="xl:col-span-2">
-            {/* <RecentBookingsTable /> */}
-          </div>
-          
-          {/* Room Status Overview - Takes 1 column on xl screens */}
-          <div className="xl:col-span-1">
-            {/* <RoomStatusOverview /> */}
-          </div>
-        </div>
 
         {/* Charts Section */}
         <BookingCharts />

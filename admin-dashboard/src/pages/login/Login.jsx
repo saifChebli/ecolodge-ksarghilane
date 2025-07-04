@@ -3,6 +3,12 @@ import LoginForm from "./components/LoginForm"
 import LoginHeader from "./components/LoginHeader"
 
 const Login = () => {
+
+
+
+
+
+
   return (
       <div className="min-h-screen flex">
       {/* Left Side - Login Form */}
@@ -38,5 +44,6 @@ const Login = () => {
     </div>
   )
 }
+
 
 export default Login
