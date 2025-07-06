@@ -4,6 +4,7 @@ import { Inter , Allura } from "next/font/google";
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
+import { Toaster } from "react-hot-toast";
 
 const inter = Inter({
   weight: "400",
@@ -25,6 +26,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={` ${inter.variable} ${allura.variable} antialiased px-8`}>
+        <Toaster />
         <Navbar />
         {children}
       </body>

@@ -1,8 +1,72 @@
 import { EyeIcon } from "lucide-react";
 import React, { useState } from "react";
-
+import { Modal } from 'antd';
+import axios from "axios";
+import { api } from "../../api";
+import toast from "react-hot-toast";
 const Settings = () => {
   const [activeTab, setActiveTab] = useState("general");
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleCancel = () => {
+    setIsModalOpen(false);
+    setUser({
+      email: "",
+      password: "",
+      role: "ADMIN",
+    });
+  };
+
+
+  const [user, setUser] = useState({
+    email: "",
+    password: "",
+    role: "ADMIN",
+  });
+
+
+  const handleInputChange = (event) => {
+    setUser({
+      ...user,
+      [event.target.name]: event.target.value,
+    });
+  };
+
+
+  const createUser = async () => {
+    try {
+      setIsLoading(true)
+      const response = await api.post("/add-user", user ,{
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      });
+      if(response.status === 201){
+        setIsModalOpen(false)
+        toast.success("User created successfully")
+        setUser({
+          email: "",
+          password: "",
+          role: "ADMIN",
+        })
+      }
+    } catch (error) {
+      toast.error("Error when try to create user")
+      console.log(error)
+      console.error(error);
+    }finally {
+      setIsLoading(false)
+    }
+  };
+
+
+
+
+
 
 
   const [showPassword, setShowPassword] = useState(false);
@@ -54,7 +118,7 @@ const Settings = () => {
       <div className="bg-white rounded-lg border border-gray-200 p-6">
         <div className="flex items-center justify-between mb-4">
           <h3 className="text-lg font-semibold text-gray-900">Staff Members</h3>
-          <button className="bg-[#1E40AF] cursor-pointer text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors duration-200 flex items-center space-x-2">
+          <button onClick={showModal} className="bg-[#1E40AF] cursor-pointer text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors duration-200 flex items-center space-x-2">
             <span>Add User</span>
           </button>
         </div>
@@ -93,6 +157,7 @@ const Settings = () => {
   };
 
   return (
+    <>
     <div className="min-h-screen bg-gray-50">
       <div className="p-6">
         {/* Page Header */}
@@ -137,6 +202,66 @@ const Settings = () => {
         </div>
       </div>
     </div>
+         <Modal
+        title="Add User"
+        closable={{ 'aria-label': 'Custom Close Button' }}
+        open={isModalOpen}
+        onOk={createUser}
+        onCancel={handleCancel}
+        okText={isLoading ? "Saving..." : "Save"}
+      >
+       <form action="" className="space-y-6">
+
+          <div className="space-y-2">
+          <label htmlFor="email" className="block text-sm font-medium">
+            Email address{" "}
+          </label>
+          <input
+            id="email"
+            name="email"
+            type="email"
+            placeholder="Enter your email address"
+            required
+            value={user.email}
+            onChange={handleInputChange}
+            className="w-full rounded border border-gray-200 focus:border-gray-400 outline-0 p-2 "
+          />
+        </div>
+        <div className="space-y-2">
+          <label htmlFor="password" className="block text-sm font-medium">
+            Password{" "}
+          </label>
+          <input
+            id="password"
+            name="password"
+            type="password"
+            placeholder="********"
+            required
+            value={user.password}
+            onChange={handleInputChange}
+            className="w-full rounded border border-gray-200 focus:border-gray-400 outline-0 p-2 "
+          />
+        </div>
+        <div className="space-y-2">
+              <label htmlFor="role" className="block text-sm font-medium">
+                Role{" "}
+              </label>
+              <select
+                id="role"
+                name="role"
+                required
+                value={user.role}
+                onChange={handleInputChange}
+                className="w-full rounded border border-gray-200 focus:border-gray-400 outline-0 p-2 "
+              >
+                <option value="ADMIN">Admin</option>
+                {/* <option value="SUPERADMIN">Super Admin</option> */}
+              </select>
+        </div>
+       </form>
+      </Modal>
+    </>
+    
   );
 };
 

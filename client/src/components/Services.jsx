@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { motion, useInView } from 'framer-motion';
 import Image from 'next/image';
 
@@ -9,6 +9,7 @@ import HotelDecoThird from '../assets/hotel/hotel-deco-4.jpg';
 import HotelRecepFirst from '../assets/hotel/hotel-recep.jpg';
 import HotelRecepSec from '../assets/hotel/hotel-recep-2.jpg';
 import HotelRecephird from '../assets/hotel/hotel-recep-3.jpg';
+import ReservationForm from './ReservationForm';
 
 const imagesLeft = [Hotel, HotelRecepFirst, HotelRecephird];
 
@@ -20,7 +21,16 @@ const fadeInUp = {
 const Services = () => {
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: true });
-
+   const [open, setOpen] = useState(false);
+   
+  
+    const showDrawer = () => {
+      setOpen(true);
+    };
+  
+    const onClose = () => {
+      setOpen(false);
+    };
   return (
     <div ref={sectionRef} className="min-h-screen py-16">
       {/* Header */}
@@ -110,6 +120,7 @@ const Services = () => {
                 className="object-cover transition-transform duration-500 group-hover:scale-110"
                 priority
               />
+
             </motion.div>
           </motion.div>
 
@@ -163,12 +174,13 @@ const Services = () => {
             <p className="text-gray-600 max-w-xl mx-auto mb-6">
               Discover the calm, comfort, and curated experience you deserve. Let your next stay be more than just a night away.
             </p>
-            <button className="px-6 py-3 bg-black text-white rounded-full cursor-pointer text-sm hover:rounded-xl transition">
+            <button onClick={showDrawer} className="px-6 py-3 bg-black text-white rounded-full cursor-pointer text-sm hover:rounded-xl transition">
               Book Your Stay
             </button>
           </motion.div>
         </div>
       </div>
+      <ReservationForm open={open} onClose={onClose} />
     </div>
   );
 };

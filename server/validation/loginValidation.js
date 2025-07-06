@@ -9,6 +9,9 @@ const loginSchema = Joi.object({
     'string.min': 'Password must be at least 6 characters',
     'string.empty': 'Password is required',
   }),
+   role: Joi.string().messages({
+    'string.empty': 'Role is not valid',
+  }),
 });
 
 export default loginSchema;

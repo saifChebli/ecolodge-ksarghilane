@@ -1,8 +1,10 @@
 import React from "react";
+import Image from 'next/image';
+import tunisiaMap from '../assets/logo/tunisia-map.png';
 
 const DesertBanner = () => {
   return (
-    <div className="desert-banner flex flex-col md:flex-row p-6 md:p-12 justify-around items-center">
+    <div className="desert-banner flex flex-col md:flex-row p-6 md:p-12 justify-between  items-center">
       <div className="md:w-96 w-66">
         <svg
           preserveAspectRatio="xMidYMid meet"
@@ -58,10 +60,17 @@ const DesertBanner = () => {
           </g>
         </svg>
       </div>
-      <div className="w-[300px] h-[250px] md:w-[600px] md:h-[450px]">
-
+      <div className="hidden md:flex w-[300px] h-[250px] md:w-[600px] md:h-[450px] items-center  justify-center">
+       <Image
+              src={tunisiaMap}
+              alt="Logo"
+              width={150}
+              height={150}
+              priority
+              className="drop-shadow-lg"
+            />
    
-      <iframe
+      {/* <iframe
         src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d16867.46445751656!2d9.628627503575725!3d32.97927396565529!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x12546d935ba511d3%3A0x3a25e399dbaf9c81!2sH%C3%B4tel%20ECOLODGE%20ksar%20ghilane!5e0!3m2!1sfr!2stn!4v1750591697314!5m2!1sfr!2stn"
         width="100%"
         height="100%"
@@ -69,7 +78,7 @@ const DesertBanner = () => {
         allowFullScreen=""
         loading="lazy"
         referrerPolicy="no-referrer-when-downgrade"
-      ></iframe>
+      ></iframe> */}
          </div>
     </div>
   );

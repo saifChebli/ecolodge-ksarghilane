@@ -14,7 +14,7 @@ const LoginBackground = () => {
       </div>
 
       {/* Content Overlay */}
-      <div className="relative -mt-24 z-10 flex flex-col justify-center px-12 w-full backdrop-blur-[4px] text-white">
+      <div className="relative -mt-24 z-10 flex flex-col justify-center px-12 w-full backdrop-blur-[2px] text-white">
         <div className="max-w-md">
           <h2 className="text-4xl font-bold mb-6">
             Streamline Your Hotel Operations
