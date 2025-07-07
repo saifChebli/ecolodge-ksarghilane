@@ -2,7 +2,7 @@ import prisma from "../db/prisma.js";
 import Joi from "joi";
 import { sendEmail } from "../utils/sendMail.js";
 import { generateReservationEmail } from "../utils/reservationTemplate.js";
-
+import { generateReservationCode } from "../utils/generateReservationCode.js";
 
 
 const reservationSchema = Joi.object({
@@ -23,9 +23,11 @@ export const createReservation = async (req, res) => {
     const { error, value } = reservationSchema.validate(req.body.data);
    
     if (error) return res.status(400).json({ error: error.details[0].message });
-    
+
+    const reservationCode = await generateReservationCode();
+
     const reservation = await prisma.reservation.create({
-      data: value,
+      data: { ...value, reservationCode }
     });
 
     // send email to admin
@@ -65,7 +67,7 @@ export const getReservationById = async (req, res) => {
 export const updateReservationStatus = async (req, res) => {
   const { id } = req.params;
   const { status } = req.body;
-
+console.log(id)
   const statusSchema = Joi.string().valid('PENDING', 'ACCEPTED', 'DECLINED').required();
   const { error } = statusSchema.validate(status);
 
@@ -73,12 +75,13 @@ export const updateReservationStatus = async (req, res) => {
 
   try {
     const updated = await prisma.reservation.update({
-      where: { id: Number(id) },
+      where: { id },
       data: { status }
     });
 
     res.json(updated);
   } catch (err) {
+    console.log(err)
     res.status(500).json({ error: 'Failed to update reservation status' });
   }
 };

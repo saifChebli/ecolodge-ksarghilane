@@ -1,81 +1,127 @@
-import { Check, EyeIcon, X } from "lucide-react";
-import React from "react";
+import { Dropdown, Menu } from "antd";
+import { MoreVertical, Eye, Check, X } from "lucide-react";
+import { useState } from "react";
+import { useEffect } from "react";
+import { api } from "../../api";
+import ReservationDetailsModal from "./components/ReservationDetailsModal";
 
 const Booking = () => {
-  const recentBookings = [
-    {
-      id: "BK001",
-      guestName: "Sarah Johnson",
-      roomNumber: "101",
-      roomType: "Deluxe Suite",
-      checkIn: "2024-01-15",
-      checkOut: "2024-01-18",
-      status: "confirmed",
-      amount: "$450",
-    },
-    {
-      id: "BK002",
-      guestName: "Michael Chen",
-      roomNumber: "205",
-      roomType: "Standard Room",
-      checkIn: "2024-01-16",
-      checkOut: "2024-01-19",
-      status: "checked-in",
-      amount: "$320",
-    },
-    {
-      id: "BK003",
-      guestName: "Emma Wilson",
-      roomNumber: "301",
-      roomType: "Executive Suite",
-      checkIn: "2024-01-17",
-      checkOut: "2024-01-20",
-      status: "pending",
-      amount: "$680",
-    },
-    {
-      id: "BK004",
-      guestName: "David Rodriguez",
-      roomNumber: "102",
-      roomType: "Standard Room",
-      checkIn: "2024-01-18",
-      checkOut: "2024-01-21",
-      status: "confirmed",
-      amount: "$290",
-    },
-    {
-      id: "BK005",
-      guestName: "Lisa Anderson",
-      roomNumber: "401",
-      roomType: "Presidential Suite",
-      checkIn: "2024-01-19",
-      checkOut: "2024-01-22",
-      status: "checked-in",
-      amount: "$950",
-    },
-  ];
+  const [bookingList, setBookingList] = useState([]);
+  const [selectedBooking, setSelectedBooking] = useState(null);
+  const [detailsModalOpen, setDetailsModalOpen] = useState(false);
+
+  const openDetailsModal = (booking) => {
+    setSelectedBooking(booking);
+    setDetailsModalOpen(true);
+  };
+
+  const closeDetailsModal = () => {
+    setDetailsModalOpen(false);
+    setSelectedBooking(null);
+  };
+
+  const getBookings = async () => {
+    try {
+      const response = await api.get("/reservation");
+      setBookingList(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    getBookings();
+  }, []);
+
+  const recentBookings = [];
 
   const getStatusBadge = (status) => {
     const statusConfig = {
-      confirmed: { color: "bg-blue-100 text-primary-700", icon: "CheckCircle" },
-      "checked-in": {
-        color: "bg-green-100 text-success-700",
-        icon: "UserCheck",
+      PENDING: {
+        color: "bg-orange-100 text-orange-700",
+        label: "Pending",
       },
-      pending: { color: "bg-orange-100 text-warning-700", icon: "Clock" },
-      cancelled: { color: "bg-red-100 text-error-700", icon: "XCircle" },
+      ACCEPTED: {
+        color: "bg-green-100 text-green-700",
+        label: "Accepted",
+      },
+      DECLINED: {
+        color: "bg-red-100 text-red-700",
+        label: "Declined",
+      },
     };
 
-    const config = statusConfig[status] || statusConfig.pending;
+    const config = statusConfig[status] || statusConfig["PENDING"];
 
     return (
       <span
-        className={`inline-flex items-center space-x-1 px-2 py-1 rounded-full text-xs font-medium ${config.color}`}
+        className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${config.color}`}
       >
-        <span className="capitalize">{status.replace("-", " ")}</span>
+        {config.label}
       </span>
     );
   };
+
+  const handleView = (booking) => {
+    console.log("Viewing", booking);
+    // open modal, or navigate to details page
+  };
+
+  const handleAccept = async (id) => {
+    await api.patch(`/reservation/${id}/status`, { status: "ACCEPTED" });
+    getBookings(); // refresh
+  };
+
+  const handleDecline = async (id) => {
+    await api.patch(`/reservation/${id}/status`, { status: "DECLINED" });
+    getBookings();
+  };
+
+  const actionMenu = (booking) => (
+    <Menu>
+      <Menu.Item
+        key="view"
+        icon={<Eye size={16} />}
+        onClick={() => openDetailsModal(booking)}
+      >
+        View Details
+      </Menu.Item>
+      <Menu.Item
+        key="accept"
+        icon={<Check size={16} />}
+        onClick={() => handleAccept(booking.id)}
+      >
+        Accept
+      </Menu.Item>
+      <Menu.Item
+        key="decline"
+        icon={<X size={16} />}
+        onClick={() => handleDecline(booking.id)}
+      >
+        Decline
+      </Menu.Item>
+    </Menu>
+  );
+
+  // Filter Booking by room type and status and guest name
+
+  const [filterRoomType, setFilterRoomType] = useState("");
+  const [filterStatus, setFilterStatus] = useState("");
+  const [filterGuestName, setFilterGuestName] = useState("");
+
+  const filteredBookings = bookingList.filter((booking) => {
+    const roomTypeMatches =
+      filterRoomType === "all" || booking.roomType === filterRoomType;
+    const statusMatches =
+      filterStatus === "all" || booking.status === filterStatus;
+    const guestNameMatches =
+      filterGuestName === "" ||
+      (booking.fullname &&
+        booking.fullname.toLowerCase().includes(filterGuestName.toLowerCase()));
+
+    return roomTypeMatches && statusMatches && guestNameMatches;
+  });
+
   return (
     <div className="p-6">
       <div className="rounded-lg shadow border border-gray-300 p-6">
@@ -92,14 +138,15 @@ const Booking = () => {
               Booking Status:
             </label>
             <select
-              id="filter"
+              id="filterStatus"
               className="border border-gray-300 rounded-md px-2 py-1"
+              onChange={(e) => setFilterStatus(e.target.value)}
+              value={filterStatus}
             >
               <option value="all">All</option>
-              <option value="confirmed">Confirmed</option>
-              <option value="checked-in">Checked In</option>
-              <option value="pending">Pending</option>
-              <option value="cancelled">Cancelled</option>
+              <option value="PENDING">Pending</option>
+              <option value="ACCEPTED">Accepted</option>
+              <option value="DECLINED">Declined</option>
             </select>
           </div>
           {/* Filter by Room type */}
@@ -108,12 +155,14 @@ const Booking = () => {
               Room Type:
             </label>
             <select
-              id="filter"
+              id="filterRoomType"
               className="border border-gray-300 rounded-md px-2 py-1"
+              onChange={(e) => setFilterRoomType(e.target.value)}
+              value={filterRoomType}
             >
               <option value="all">All</option>
-              <option value="deluxe-suite">Deluxe Suite</option>
-              <option value="standard-room">Standard Room</option>
+              <option value="STANDARD">Standard</option>
+              <option value="SUITE">Suite</option>
             </select>
           </div>
 
@@ -139,6 +188,8 @@ const Booking = () => {
               id="search"
               className="border w-full border-gray-300 rounded-md px-2 py-1 mx-2"
               placeholder="Search by guest name ..."
+              onChange={(e) => setFilterGuestName(e.target.value)}
+              value={filterGuestName}
             />
           </div>
         </div>
@@ -152,7 +203,13 @@ const Booking = () => {
                 Guest
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium  uppercase tracking-wider">
-                Room
+                Adults
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium  uppercase tracking-wider">
+                Children
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium  uppercase tracking-wider">
+                Room type
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium  uppercase tracking-wider">
                 Check-in
@@ -169,54 +226,62 @@ const Booking = () => {
             </tr>
           </thead>
           <tbody className="divide-y divide-border">
-            {recentBookings.map((booking) => (
+            {filteredBookings?.map((booking) => (
               <tr
                 key={booking.id}
                 className="hover:bg-secondary-50 transition-fast"
               >
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium ">
-                  {booking.id}
+                  {booking.reservationCode}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   <div>
                     <div className="text-sm font-medium ">
-                      {booking.guestName}
+                      {booking.fullname ? booking.fullname : "Unknown Guest"}
                     </div>
                   </div>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   <div>
-                    <div className="text-sm font-medium ">
-                      Room {booking.roomNumber}
-                    </div>
+                    <div className="text-sm ">{booking.adults}</div>
+                  </div>
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap">
+                  <div>
+                    <div className="text-sm ">{booking.children}</div>
+                  </div>
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap">
+                  <div>
                     <div className="text-sm ">{booking.roomType}</div>
                   </div>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm ">
-                  {new Date(booking.checkIn).toLocaleDateString()}
+                  {new Date(booking.checkInDate).toLocaleDateString()}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   {getStatusBadge(booking.status)}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium ">
-                  {booking.amount}
+                  {booking.amount ? `$${booking.amount}` : "N/A"}
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-[12px] font-medium">
-                  <button className="bg-gray-100 text-gray-700 px-2 py-2 rounded-lg cursor-pointer hover:bg-gray-200">
-                    View Details
-                  </button>
-                  <button className="bg-green-100 mx-2 text-green-700 px-2 py-2 rounded-lg cursor-pointer hover:bg-green-200">
-                    Check-in
-                  </button>
-                  <button className="bg-red-100 text-red-700 px-2 py-2 rounded-lg cursor-pointer hover:bg-red-200">
-                    Cancel
-                  </button>
+                <td className="px-6 py-4 whitespace-nowrap">
+                  <Dropdown overlay={actionMenu(booking)} trigger={["click"]}>
+                    <button className="text-gray-600 hover:text-black">
+                      <MoreVertical size={18} />
+                    </button>
+                  </Dropdown>
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
+      <ReservationDetailsModal
+        open={detailsModalOpen}
+        onClose={closeDetailsModal}
+        reservation={selectedBooking}
+      />
     </div>
   );
 };
