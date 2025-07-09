@@ -11,12 +11,39 @@ export const getAllAccounts = async (req, res) => {
     return res.status(500).json({ message: "Error when try to get all users" });
   }
 };
+export const getAllAdminsAccount = async (req, res) => {
+  try {
+    const users = await prisma.user.findMany({
+      where: {
+        role: "ADMIN",
+      },
+      select: {
+        id: true,
+        email: true,
+        role: true,
+        createdAt: true,
+        updatedAt: true,
+      },
+    });
+    res.status(200).json(users);
+  } catch (error) {
+    return res.status(500).json({ message: "Error when try to get all users" });
+  }
+};
 
 export const getAccount = async (req, res) => {
+  const id = req.user.id;
   try {
     const user = await prisma.user.findUnique({
       where: {
-        id: req.params.id,
+        id,
+      },
+      select: {
+        id: true,
+        email: true,
+        role: true,
+        createdAt: true,
+        updatedAt: true,
       },
     });
     res.status(200).json(user);
@@ -126,7 +153,7 @@ export const logout = async(req, res) => {
 
 export const updateAccount = async (req, res) => {
   const { id } = req.user
-  const { email , password } = req.body
+  const { email } = req.body
   try {
     const user = await prisma.user.update({
       where: {
@@ -134,11 +161,34 @@ export const updateAccount = async (req, res) => {
       },
       data: {
         email,
-        password,
       },
     });
     res.status(200).json(user);
   } catch (error) {
     return res.status(500).json({ message: "Error when try to update user" });
+  }
+};
+
+export const updatePassword = async (req, res) => {
+  const userId = req.user.id;
+  const { currentPassword, newPassword } = req.body;
+
+  try {
+    const user = await prisma.user.findUnique({ where: { id: userId } });
+
+    const isMatch = await bcrypt.compare(currentPassword, user.password);
+    if (!isMatch) {
+      return res.status(400).json({ message: "Current password is incorrect" });
+    }
+
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    await prisma.user.update({
+      where: { id: userId },
+      data: { password: hashedPassword },
+    });
+
+    res.status(200).json({ message: "Password updated successfully" });
+  } catch (err) {
+    res.status(500).json({ message: "Error updating password" });
   }
 };

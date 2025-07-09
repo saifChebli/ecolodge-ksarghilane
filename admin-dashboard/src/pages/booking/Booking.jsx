@@ -1,5 +1,5 @@
 import { Dropdown, Menu } from "antd";
-import { MoreVertical, Eye, Check, X } from "lucide-react";
+import { MoreVertical, Eye, Check, UserRoundCheck , X } from "lucide-react";
 import { useState } from "react";
 import { useEffect } from "react";
 import { api } from "../../api";
@@ -33,10 +33,13 @@ const Booking = () => {
     getBookings();
   }, []);
 
-  const recentBookings = [];
 
   const getStatusBadge = (status) => {
     const statusConfig = {
+      CHECKED_IN: {
+        color: "bg-blue-100 text-blue-700",
+        label: "Checked In",
+      },
       PENDING: {
         color: "bg-orange-100 text-orange-700",
         label: "Pending",
@@ -62,18 +65,19 @@ const Booking = () => {
     );
   };
 
-  const handleView = (booking) => {
-    console.log("Viewing", booking);
-    // open modal, or navigate to details page
-  };
 
   const handleAccept = async (id) => {
     await api.patch(`/reservation/${id}/status`, { status: "ACCEPTED" });
-    getBookings(); // refresh
+    getBookings();
   };
 
   const handleDecline = async (id) => {
     await api.patch(`/reservation/${id}/status`, { status: "DECLINED" });
+    getBookings();
+  };
+
+  const handleChecked = async (id) => {
+    await api.patch(`/reservation/${id}/status`, { status: "CHECKED_IN" });
     getBookings();
   };
 
@@ -85,6 +89,13 @@ const Booking = () => {
         onClick={() => openDetailsModal(booking)}
       >
         View Details
+      </Menu.Item>
+      <Menu.Item
+        key="checkedIn"
+        icon={<UserRoundCheck size={16} />}
+        onClick={() => handleChecked(booking.id)}
+      >
+        Checked In
       </Menu.Item>
       <Menu.Item
         key="accept"
@@ -105,8 +116,8 @@ const Booking = () => {
 
   // Filter Booking by room type and status and guest name
 
-  const [filterRoomType, setFilterRoomType] = useState("");
-  const [filterStatus, setFilterStatus] = useState("");
+  const [filterRoomType, setFilterRoomType] = useState("all");
+  const [filterStatus, setFilterStatus] = useState("all");
   const [filterGuestName, setFilterGuestName] = useState("");
 
   const filteredBookings = bookingList.filter((booking) => {
@@ -132,7 +143,7 @@ const Booking = () => {
       </div>
       <div className="overflow-x-auto rounded-lg shadow border border-gray-300 p-6 my-10">
         {/* Filter and search */}
-        <div className="flex gap-16 items-center justify-center my-4 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 my-4 mb-8">
           <div className="flex items-center">
             <label htmlFor="filter" className="mr-2">
               Booking Status:
@@ -145,6 +156,7 @@ const Booking = () => {
             >
               <option value="all">All</option>
               <option value="PENDING">Pending</option>
+              <option value="CHECKED_IN">Checked In</option>
               <option value="ACCEPTED">Accepted</option>
               <option value="DECLINED">Declined</option>
             </select>
