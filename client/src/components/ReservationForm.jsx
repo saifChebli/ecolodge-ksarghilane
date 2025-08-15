@@ -7,7 +7,8 @@ import React, { useState } from "react";
 import { toast } from "react-hot-toast";
 import api from "../../api";
 import { set, z } from "zod";
-
+import PhoneInput from 'react-phone-input-2';
+import 'react-phone-input-2/lib/style.css';
 const ReservationForm = ({ open, onClose }) => {
   const [adultsCounter, setAdultsCounter] = useState(0);
   const [childrenCounter, setChildrenCounter] = useState(0);
@@ -183,17 +184,18 @@ const content = <div style={contentStyle} />;
             <label htmlFor="phone" className="block text-sm font-semibold">
               Phone number{" "}
             </label>
-            <Input
-              id="phone"
-              name="phone"
-              type="tel"
-              pattern="[0-9]*"
-              inputMode="numeric"
-              placeholder="Enter your phone number"
-              required
-              value={phone}
-              onChange={handleInputChange}
-              className="w-full rounded border border-gray-200 focus:border-gray-400 outline-0 p-2 "
+            <PhoneInput
+              country={'tn'}
+        value={phone}
+        onChange={(value) => setPhone(value)}
+        inputProps={{
+          name: 'phone',
+          required: true,
+          id: 'phone',
+        }}
+        inputClass="!w-full"
+        containerClass="!w-full"
+        enableSearch
             />
           </div>
           <Divider />
@@ -234,6 +236,21 @@ const content = <div style={contentStyle} />;
             >
               <option value="STANDARD">Standard</option>
               <option value="SUITE">Suite</option>
+            </select>
+          </div>
+
+           <div className="flex flex-col space-y-2">
+            <label htmlFor="visitType" className="font-semibold">
+              Visit Type
+            </label>
+            <select
+              // onChange={(e) => setRoomType(e.target.value)}
+              name="visitType"
+              id=""
+              className="w-full rounded border border-gray-300 focus:border-blue-400 outline-0 p-[6px] "
+            >
+              <option value="STANDARD">Rest and discovery</option>
+              <option value="SUITE">Adventure expedition </option>
             </select>
           </div>
           {/* Counter for how many room and type standard or suite , number of adults and children */}

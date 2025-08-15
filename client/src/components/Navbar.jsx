@@ -69,12 +69,13 @@ const Navbar = () => {
       <div className="w-1/2 gap-6 hidden md:flex items-center space-x-8">
         <div className="flex p-2 justify-around gap-2 w-full  items-start bg-gray-100 rounded-3xl">
           {/* <MenuIcon className="p-0 cursor-pointer" />  */}
-  <a href="#hero">Home</a>
-      <a href="#about">About</a>
-      <a href="#services">Services</a>
-      <a href="#rooms">Rooms</a>
-      <a href="#suits">Suits</a>
-      <a href="#desert">Contact</a>
+          <a href="#hero">Home</a>
+          <a href="#about">About</a>
+          <a href="#services">Services</a>
+          <a href="#rooms">Rooms</a>
+          <a href="#suits">Suits</a>
+          <a href="#desert">Contact</a>
+          {/* <Link href='/blog'>Explore our Blog</Link> */}
         </div>
         <div className="select-lng">
           <img
