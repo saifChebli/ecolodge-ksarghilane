@@ -49,11 +49,17 @@ export const metadata = {
   },
   icons: {
     icon: "/logo-icon.png",
+    shortcut: "/logo-icon.png",
+    apple: "/logo-icon.png",
   },
 };
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
+      <head>
+        <link rel="icon" href="/logo-icon.png" />
+        <link rel="apple-touch-icon" href="/logo-icon.png" />
+      </head>
       <body className={` ${inter.variable} ${allura.variable} antialiased px-8`}>
         <Toaster />
         <Navbar />
