@@ -125,7 +125,7 @@ const Blog = () => {
 
             {/* Regular Posts */}
             {regularPosts.map((post) => (
-              <h1>hi</h1>
+              <h1 key={post.id}>hi</h1>
             ))}
           </div>
 
