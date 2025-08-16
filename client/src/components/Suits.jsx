@@ -2,8 +2,14 @@
 
 import React from "react";
 import SwiperComponent from "./SwiperComponent";
+import { useTranslation } from "../lib/i18n";
 
-const features = [
+
+
+
+const Suits = () => {
+  const { t } = useTranslation();
+  const features = [
   {
     icon: (
       <svg
@@ -41,7 +47,7 @@ const features = [
             <path d="M71.7 42.6c.6 0 1.2.1 1.7.2 0-.1.1-.2.2-.3h-.1l-1.1-.1h-.5c-.1 0-.1.1-.2.2M64.1 42.5c1.1 0 2.1-.1 3.2-.1 0-.1.1-.2.1-.3h-3.2c-.1.2-.1.3-.1.4M55 43.8s.1 0 0 0h.2c.2-.1.4-.3.6-.4h-.2l-.7.1-1.9.8c.7-.2 1.4-.4 2-.5M75.9 42.8c0 .1-.1.2-.1.3.6.1 1.2.2 1.7.3 0-.1.1-.2.1-.3-.4-.1-.7-.1-1.1-.2-.2 0-.4-.1-.6-.1M80.1 43.7c-.1.1-.2.2-.2.3.2 0 .4.1.7.2l.4.1c.1-.1.1-.2.2-.3l-.5-.1c-.3-.1-.4-.2-.6-.2M79.1 34c.2-.2.1-.7-.3-.7s-.5.4-.3.7c.1-.1.1-.3.2-.4zM62.7 34.6c.5 0 .5-.7.1-.8-.2.2-.3.4-.5.5.1.1.2.3.4.3M53 41.3c1.6-1.2 3.1-2.5 4.3-4 1.3-1.6 2.7-3.1 4.1-4.6 1.5-1.5 3.1-2.9 4.9-4 1.1-.7 2.2-1.2 3.4-1.5.3 0 .5-.1.8-.1h-.1c-.8 0-1.7 0-2.5.3-1.6.4-3.1 1.2-4.3 2.3-1.3 1.1-2.6 2.2-3.8 3.4l-6 5.7-4.8 4.5c-.8.8-1.7 1.5-2.5 2.2 2.2-1.4 4.4-2.7 6.5-4.2M59.3 23.1c-.8-.7-1.7-1.3-2.6-1.9-1.3-.8-2.7-1.7-4-2.5-1.2-.7-2.3-1.4-3.5-2q-1.35-.75-3-.9c-.4 0-.8 0-1.2.1 2.4 1.1 4.9 2.1 7.3 3.4 2.4 1.1 4.7 2.5 7 3.8M42.2 20.8c2.1.2 4.3.4 6.4.6 1.9.2 3.9.5 5.8 1 .4.1.7.2 1.1.4 0 0 0-.1-.1-.1-1-.6-2.1-1.1-3.2-1.5s-2.2-.6-3.3-.7h-3.3c-1.2 0-2.3.1-3.5.2zq-.15 0 0 0"></path>
           </svg>
     ),
-    text: "Vue sur les dunes ou l'oasis",
+    text: t('dunesOasisView'),
   },
   {
     icon: (
@@ -67,7 +73,7 @@ const features = [
             </g>
           </svg>
     ),
-    text: "Superficie 20m²",
+    text: t('surface20m2'),
   },
   {
     icon: (
@@ -178,7 +184,7 @@ const features = [
             </g>
           </svg>
     ),
-    text: "Eau chaude 24H/24",
+    text: t('hotWater24h'),
   },
   {
     icon: (
@@ -209,7 +215,7 @@ const features = [
     </g>
 </svg>
     ),
-    text: "Climatisation chaud/froid 24H/24",
+    text: t('airConditioning24h'),
   },
   {
     icon: (
@@ -224,18 +230,16 @@ const features = [
     </g>
 </svg>
     ),
-    text: "À partir de 200DT/personne\nPetit déjeuner inclus",
+    text: t('from200DTPerPerson'),
   },
 ];
-
-const Suits = () => {
   return (
     <section className="py-16 px-0 md:px-6">
       <div className="grid md:grid-cols-2 gap-12 items-end justify-between">
 
         {/* Left Side - Features */}
         <div className="flex flex-col items-center text-center w-full">
-          <h1 className="text-4xl font-light fontAllura">Our Refined Suites</h1>
+          <h1 className="text-4xl font-light fontAllura">{t('ourRefinedSuites')}</h1>
           <p className="text-sm text-gray-600 mb-6">Chambres simple / double</p>
           <div className="rounded-xl overflow-hidden max-w-lg">
             <SwiperComponent />

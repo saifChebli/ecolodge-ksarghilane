@@ -6,6 +6,7 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import { Toaster } from "react-hot-toast";
 import ScrollFollowingButton from "@/components/ScrollFollowingButton";
+import { I18nProvider } from '../lib/i18n';
 
 const inter = Inter({
   weight: "400",
@@ -48,23 +49,28 @@ export const metadata = {
       "Eco-friendly desert lodging in Tunisia with camel rides, local cuisine, and Sahara adventures.",
   },
   icons: {
-    icon: "/logo-icon.png",
-    shortcut: "/logo-icon.png",
-    apple: "/logo-icon.png",
+    icon: [
+      { url: "/logo-icon.png", sizes: "32x32", type: "image/png" },
+    ],
+    apple: [
+      { url: "/logo-icon.png", sizes: "180x180", type: "image/png" },
+    ],
   },
 };
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <head>
-        <link rel="icon" href="/logo-icon.png" />
-        <link rel="apple-touch-icon" href="/logo-icon.png" />
+        <link rel="icon" href="/logo-icon.png" sizes="32x32"/>
+        <link rel="apple-touch-icon" href="/logo-icon.png" sizes="180x180" />
       </head>
       <body className={` ${inter.variable} ${allura.variable} antialiased px-8`}>
-        <Toaster />
-        <Navbar />
-        <ScrollFollowingButton />
-        {children}
+        <I18nProvider>
+          <Toaster />
+          {/* <Navbar /> */}
+          <ScrollFollowingButton />
+          {children}
+        </I18nProvider>
       </body>
     </html>
   );

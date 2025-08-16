@@ -11,6 +11,7 @@ import { motion, AnimatePresence, useInView } from "framer-motion";
 import CustomLineSVG from "./CustomLineSVG";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Pagination, Navigation, EffectFade } from "swiper/modules";
+import { useTranslation } from "../lib/i18n";
 
 import "swiper/css";
 import "swiper/css/pagination";
@@ -21,6 +22,7 @@ const AboutUs = () => {
   const [altView, setAltView] = useState(false);
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: true });
+  const { t } = useTranslation();
 const images = [Hotel, HotelView, HotelOutside];
   const handleToggle = () => {
     setAltView((prev) => !prev);
@@ -30,7 +32,7 @@ const images = [Hotel, HotelView, HotelOutside];
     <section
       ref={sectionRef}
       id="about"
-      className="min-h-screen py-16 px-6 font-sans bg-white overflow-hidden"
+      className="min-h-screen py-16 px-6 font-sans overflow-hidden"
     >
       <motion.div
         initial={{ opacity: 0, y: 50 }}
@@ -52,11 +54,11 @@ const images = [Hotel, HotelView, HotelOutside];
                   className="space-y-4"
                 >
                   <p className="text-3xl md:text-4xl font-bold fontAllura text-gray-900">
-                    Get back to basics
+                    {t('discoverOurStory')}
                     <CustomLineSVG />
                   </p>
                   <p className="text-gray-700 text-base md:text-lg max-w-prose">
-                    In a world where everything is possible, getting back to basics, disconnecting (really) has become almost impossible. The oasis, a refuge in the middle of the desert, is one of the last places on our earth where this disconnection is possible.
+                    {t('aboutDescription')}
                   </p>
                 </motion.div>
               ) : (
@@ -69,11 +71,11 @@ const images = [Hotel, HotelView, HotelOutside];
                   className="space-y-4"
                 >
                   <p className="text-3xl md:text-4xl font-bold fontAllura text-gray-900">
-                    Get back to basics
+                    {t('discoverOurStory')}
                     <CustomLineSVG />
                   </p>
                   <p className="text-gray-700 text-base md:text-lg max-w-prose">
-                    We have imagined an attentive welcome and a refined lodge for desert lovers. Our hosts must be able to enjoy both intimate moments, moments of discovery and sharing, as well as intense moments rich in emotions.
+                    {t('aboutSubtitle')}
                   </p>
                 </motion.div>
               )}

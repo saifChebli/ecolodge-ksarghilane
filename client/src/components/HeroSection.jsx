@@ -5,8 +5,10 @@ import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { Drawer, DatePicker, Input, Divider } from "antd";
 import ReservationForm from "./ReservationForm";
+import { useTranslation } from "../lib/i18n";
 const HeroSection = () => {
   const { RangePicker } = DatePicker;
+  const { t } = useTranslation();
 
   const [open, setOpen] = useState(false);
  
@@ -47,7 +49,7 @@ const HeroSection = () => {
               className="max-w-xl"
             >
               <h1 className="text-5xl md:text-7xl font-extrabold leading-tight">
-                Unwind in a Dreamy <br /> Desert Haven
+                {t('unwindInDreamy')} <br /> {t('desertHaven')}
               </h1>
               <motion.p
                 initial={{ opacity: 0 }}
@@ -55,9 +57,7 @@ const HeroSection = () => {
                 transition={{ delay: 0.5, duration: 1 }}
                 className="text-lg font-medium leading-tight mt-4"
               >
-                Indulge in the essence of desert elegance as you uncover the
-                breathtaking beauty and serene stillness of our Saharan
-                Ecolodge.
+                {t('indulgeInEssence')}
               </motion.p>
             </motion.div>
 
@@ -68,15 +68,15 @@ const HeroSection = () => {
               transition={{ delay: 1, duration: 1 }}
               className="flex justify-between items-center"
             >
-              <motion.button
+              {/* <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 className="res-btn font-semibold flex items-center justify-center gap-4 text-white py-2 px-4 rounded-full"
                 onClick={showDrawer}
               >
-                <span>Reservation</span>
+                <span>{t('reservation')}</span>
                 <ArrowRightIcon />
-              </motion.button>
+              </motion.button> */}
 
               <motion.div
                 initial={{ scale: 0.8, opacity: 0 }}

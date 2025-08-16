@@ -3,9 +3,12 @@
 import React, { useState } from "react";
 import { MenuIcon, FlagIcon, LightbulbIcon, Menu, X } from "lucide-react";
 import Link from "next/link";
+import { useTranslation } from "../lib/i18n";
+import LanguageSwitcher from "./LanguageSwitcher";
 
 const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { t } = useTranslation();
 
   return (
     <div className="h-16 py-12 flex items-center justify-between">
@@ -66,22 +69,19 @@ const Navbar = () => {
       <div>
         
       </div>
-      <div className="w-1/2 gap-6 hidden md:flex items-center space-x-8">
-        <div className="flex p-2 justify-around gap-2 w-full  items-start bg-gray-100 rounded-3xl">
+      <div className="w-3/4 gap-6 hidden md:flex items-center">
+        <div className="flex p-2 gap-12 w-full items-start">
           {/* <MenuIcon className="p-0 cursor-pointer" />  */}
-          <a href="#hero">Home</a>
-          <a href="#about">About</a>
-          <a href="#services">Services</a>
-          <a href="#rooms">Rooms</a>
-          <a href="#suits">Suits</a>
-          <a href="#desert">Contact</a>
-          {/* <Link href='/blog'>Explore our Blog</Link> */}
+          <a href="#hero" className="font-medium text-sm">{t('home')}</a>
+          <a href="#about" className="font-medium text-sm">{t('about')}</a>
+          <a href="#services" className="font-medium text-sm">{t('services')}</a>
+          <a href="#rooms" className="font-medium text-sm">{t('rooms')}</a>
+          <a href="#suits" className="font-medium text-sm">{t('suits')}</a>
+          <a href="#desert" className="font-medium text-sm">{t('contact')}</a>
+          <Link href='/blog' className="font-medium text-sm">{t('exploreOurBlog')}</Link>
         </div>
         <div className="select-lng">
-          <img
-            src="https://static.parastorage.com/services/linguist-flags/1.969.0/assets/flags/round/FRA.png"
-            alt=""
-          />
+          <LanguageSwitcher />
         </div>
       </div>
       <button
@@ -97,10 +97,10 @@ const Navbar = () => {
       {mobileMenuOpen && (
         <div className="md:hidden py-4 border-t border-amber-100">
           <nav className="flex flex-col space-y-4">
-            <Link href="#accommodations" className="transition-colors">
-              Welcome
+            <Link href="/blog" className="transition-colors">
+              Our Blog
             </Link>
-            <Link href="#experiences" className=" transition-colors">
+            {/* <Link href="#experiences" className=" transition-colors">
               About Us
             </Link>
             <Link href="#location" className="transition-colors">
@@ -111,7 +111,7 @@ const Navbar = () => {
             </Link>
             <Link href="#contact" className=" transition-colors">
               An adventure
-            </Link>
+            </Link> */}
           </nav>
         </div>
       )}

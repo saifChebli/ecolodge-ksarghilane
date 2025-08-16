@@ -1,7 +1,9 @@
 import { Car, Facebook, Instagram, Mail, MapPin, Phone } from "lucide-react";
 import React from "react";
+import { useTranslation } from "../lib/i18n";
 
 const Footer = () => {
+  const { t } = useTranslation();
   return (
     <div className="h-[90vh] py-16 ">
         <div className="flex flex-col md:flex-row gap-36 items-start justify-around">
@@ -74,7 +76,7 @@ const Footer = () => {
     </div>
 
             <div>
-                <h1 className="text-2xl my-4">Contact Us</h1>
+                <h1 className="text-2xl my-4">{t('contactUs')}</h1>
                 <p className="font-semibold mb-4">Écolodge Ksar-Ghilane</p>
                 <div className="flex items-start space-x-3">
                 <MapPin />

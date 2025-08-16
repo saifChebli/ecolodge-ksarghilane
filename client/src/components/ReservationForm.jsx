@@ -9,7 +9,9 @@ import api from "../../api";
 import { set, z } from "zod";
 import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css';
+import { useTranslation } from "../lib/i18n";
 const ReservationForm = ({ open, onClose }) => {
+  const { t } = useTranslation();
   const [adultsCounter, setAdultsCounter] = useState(0);
   const [childrenCounter, setChildrenCounter] = useState(0);
   const [email, setEmail] = useState("");
@@ -133,7 +135,7 @@ const content = <div style={contentStyle} />;
   return (
     <div>
       <Drawer
-        title="Ecolodge Ksar Ghillane - Reservation"
+        title={`Ecolodge Ksar Ghillane - ${t('reservation')}`}
         closable={{ "aria-label": "Close Button" }}
         onClose={onClose}
         open={open}
@@ -152,13 +154,13 @@ const content = <div style={contentStyle} />;
         <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
             <div className="space-y-2">
             <label htmlFor="fullname" className="block text-sm font-semibold">
-               Full name{" "}
+               {t('fullName')}{" "}
             </label>
             <Input
               id="fullname"
               name="fullname"
               type="text"
-              placeholder="Enter your full name"
+              placeholder={t('enterFullName')}
               required
               value={fullname}
               onChange={handleInputChange}
@@ -167,13 +169,13 @@ const content = <div style={contentStyle} />;
           </div>
           <div className="space-y-2">
             <label htmlFor="email" className="block text-sm font-semibold">
-              Email address{" "}
+              {t('emailAddress')}{" "}
             </label>
             <Input
               id="email"
               name="email"
               type="email"
-              placeholder="Enter your email address"
+              placeholder={t('enterEmailAddress')}
               required
               value={email}
               onChange={handleInputChange}
@@ -182,7 +184,7 @@ const content = <div style={contentStyle} />;
           </div>
           <div className="space-y-2">
             <label htmlFor="phone" className="block text-sm font-semibold">
-              Phone number{" "}
+              {t('phoneNumber')}{" "}
             </label>
             <PhoneInput
               country={'tn'}
@@ -201,7 +203,7 @@ const content = <div style={contentStyle} />;
           <Divider />
           <div className="space-y-2">
             <label htmlFor="checkin" className="block text-sm font-semibold">
-              Check-in Date | Check-out Date
+              {t('checkIn')} | {t('checkOut')}
             </label>
             <DatePicker.RangePicker
               disabledDate={disabledDate}
@@ -226,7 +228,7 @@ const content = <div style={contentStyle} />;
           {/* Room Type */}
           <div className="flex flex-col space-y-2">
             <label htmlFor="roomType" className="font-semibold">
-              Room Type
+              {t('roomType')}
             </label>
             <select
               onChange={(e) => setRoomType(e.target.value)}
@@ -234,14 +236,14 @@ const content = <div style={contentStyle} />;
               id=""
               className="w-full rounded border border-gray-300 focus:border-blue-400 outline-0 p-[6px] "
             >
-              <option value="STANDARD">Standard</option>
-              <option value="SUITE">Suite</option>
+              <option value="STANDARD">{t('standard')}</option>
+              <option value="SUITE">{t('suite')}</option>
             </select>
           </div>
 
            <div className="flex flex-col space-y-2">
             <label htmlFor="visitType" className="font-semibold">
-              Visit Type
+              {t('visitType')}
             </label>
             <select
               // onChange={(e) => setRoomType(e.target.value)}
@@ -249,19 +251,19 @@ const content = <div style={contentStyle} />;
               id=""
               className="w-full rounded border border-gray-300 focus:border-blue-400 outline-0 p-[6px] "
             >
-              <option value="STANDARD">Rest and discovery</option>
-              <option value="SUITE">Adventure expedition </option>
+              <option value="STANDARD">{t('restAndDiscovery')}</option>
+              <option value="SUITE">{t('adventureExpedition')}</option>
             </select>
           </div>
           {/* Counter for how many room and type standard or suite , number of adults and children */}
 
           <div>
             <label htmlFor="guests" className="block text-sm font-semibold">
-              Guests
+              {t('guests')}
             </label>
             <div className="flex flex-col space-y-4 my-4">
               <div className="flex items-center justify-between mx-0">
-                <h2>Adults</h2>
+                <h2>{t('adults')}</h2>
                 <div className="flex items-center space-x-2">
                   <PlusCircleIcon
                     onClick={handlePlusAdult}
@@ -275,7 +277,7 @@ const content = <div style={contentStyle} />;
                 </div>
               </div>
               <div className="flex items-center justify-between ">
-                <h2>Children</h2>
+                <h2>{t('children')}</h2>
                 <div className="flex items-center space-x-2">
                   <PlusCircleIcon
                     onClick={handlePlusChildren}
@@ -296,7 +298,7 @@ const content = <div style={contentStyle} />;
             disabled={isLoading}
             className="bg-[#000000] cursor-pointer text-white px-4 py-2 rounded-md transition-colors duration-200"
           >
-            {isLoading ? "Loading..." : "Reserve Now"}
+            {isLoading ? t('loading') : t('reserveNow')}
           </button>
         </form>
       </Drawer>

@@ -3,6 +3,7 @@
 import React, { useRef, useState } from 'react';
 import { motion, useInView } from 'framer-motion';
 import Image from 'next/image';
+import { useTranslation } from '../lib/i18n';
 
 import Hotel from '../assets/hotel/hotel-deco.jpg';
 import HotelDecoThird from '../assets/hotel/hotel-deco-4.jpg';
@@ -21,6 +22,7 @@ const fadeInUp = {
 const Services = () => {
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: true });
+  const { t } = useTranslation();
    const [open, setOpen] = useState(false);
    
   
@@ -42,10 +44,10 @@ const Services = () => {
         transition={{ duration: 0.8 }}
       >
         <h1 className="text-4xl font-bold max-w-xl fontAllura">
-          Timeless Services, Single Vision
+          {t('ourServices')}
         </h1>
         <p className="text-gray-600 max-w-md text-base">
-          Whatever activities you will have practiced during the day, once arrived in the lodge, everything is done to welcome you as warmly as possible.
+          {t('servicesSubtitle')}
         </p>
       </motion.div>
 

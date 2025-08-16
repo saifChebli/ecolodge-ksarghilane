@@ -1,8 +1,11 @@
 import React from "react";
 import Image from 'next/image';
 import tunisiaMap from '../assets/logo/tunisia-map.png';
+import { useTranslation } from "../lib/i18n";
 
 const DesertBanner = () => {
+  const { t } = useTranslation();
+
   return (
     <div className="desert-banner flex flex-col md:flex-row p-6 md:p-12 justify-between  items-center">
       <div className="md:w-96 w-66">

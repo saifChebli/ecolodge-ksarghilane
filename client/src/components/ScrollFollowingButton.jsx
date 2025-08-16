@@ -50,7 +50,7 @@ function ScrollFollowingButton() {
        onClick={showDrawer}
 
     >
-      <span className="max-w-0 overflow-hidden group-hover:max-w-[200px] transition-all duration-500">Reservation</span>
+      <span className="overflow-hidden  transition-all duration-500">Reservation</span>
       <ArrowRightIcon />
     </button>
         </>

@@ -10,6 +10,7 @@ import DesertBanner from "@/components/DesertBanner";
 import Footer from "@/components/Footer";
 import { useEffect, useState } from "react";
 import SplashScreen from "@/components/SplashScreen";
+import Navbar from "@/components/Navbar";
 
 export default function Home() {
     const [isSplashDone, setIsSplashDone] = useState(false);
@@ -28,7 +29,7 @@ export default function Home() {
       isSplashDone && (
 
         <div>
-
+       <Navbar />   
       <div id="hero"><HeroSection /></div>
       <div id="about"><AboutUs /></div>
       <div id="hotel"><HotelBanner /></div>
