@@ -233,30 +233,37 @@ const Rooms = () => {
     text: t('from200DTPerPerson'),
   },
 ];
-  return (
-    <section className="py-16 px-0 md:px-6">
-      <div className="grid md:grid-cols-2 gap-12 items-end">
-        {/* Left Side - Features */}
-        <div className="space-y-6 ">
-          {features.map((item, index) => (
-            <div key={index} className="flex items-center gap-2">
-              {item.icon}
-              <p className="text-base text-gray-800 font-semibold whitespace-pre-line  ">{item.text}</p>
-            </div>
-          ))}
-        </div>
-
-        {/* Right Side - Room Image and title */}
-        <div className="flex flex-col items-center text-center w-full">
-          <h1 className="text-4xl font-light fontAllura">{t('eleganceInEveryDetail')}</h1>
-          <p className="text-sm text-gray-600 mb-6">{t('simpleDoubleRooms')}</p>
-          <div className="rounded-xl overflow-hidden max-w-lg">
-            <SwiperComponent />
+ return (
+  <section className="min-h-screen py-12 sm:py-16 px-4 sm:px-6 lg:px-12">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-12 items-start md:items-end">
+      {/* Left Side - Features */}
+      <div className="space-y-6 w-full">
+        {features.map((item, index) => (
+          <div key={index} className="flex items-start sm:items-center gap-3">
+            <div className="flex-shrink-0">{item.icon}</div>
+            <p className="text-sm sm:text-base md:text-lg text-gray-800 font-semibold whitespace-pre-line">
+              {item.text}
+            </p>
           </div>
+        ))}
+      </div>
+
+      {/* Right Side - Room Image and title */}
+      <div className="flex flex-col items-center text-center w-full">
+        <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-light fontAllura">
+          {t("eleganceInEveryDetail")}
+        </h1>
+        <p className="text-xs sm:text-sm md:text-base text-gray-600 mb-4 sm:mb-6">
+          {t("simpleDoubleRooms")}
+        </p>
+        <div className="rounded-xl overflow-hidden w-full max-w-md sm:max-w-lg md:max-w-xl">
+          <SwiperComponent />
         </div>
       </div>
-    </section>
-  );
+    </div>
+  </section>
+);
+
 };
 
 export default Rooms;

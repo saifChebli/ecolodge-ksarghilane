@@ -43,6 +43,7 @@ const room = [
 
 
   return (
+    
     <Swiper
       modules={[Navigation, Pagination, Autoplay]}
       spaceBetween={0}
@@ -54,7 +55,7 @@ const room = [
         disableOnInteraction: false,
       }}
       loop={true}
-        className="mySwiper no-arrows h-full"
+        className="mySwiper no-arrows h-full w-full "
     >
 
       {room.map((item, index) => (

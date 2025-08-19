@@ -39,7 +39,7 @@ const SplashScreen = () => {
           role="presentation"
           aria-hidden="true"
           aria-label=""
-          width={332}
+          width={282}
           height={217}
         >
           <g>
