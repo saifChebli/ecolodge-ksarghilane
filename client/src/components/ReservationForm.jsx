@@ -3,13 +3,17 @@
 import { DatePicker, Divider, Drawer, Input, Spin } from "antd";
 import dayjs from "dayjs";
 import { MinusCircleIcon, PlusCircleIcon } from "lucide-react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import api from "../../api";
 import { set, z } from "zod";
-import PhoneInput from 'react-phone-input-2';
-import 'react-phone-input-2/lib/style.css';
+import PhoneInput from "react-phone-input-2";
+import "react-phone-input-2/lib/style.css";
 import { useTranslation } from "../lib/i18n";
+import DateRangePicker from "./DateRangePicker";
+
+
+
 const ReservationForm = ({ open, onClose }) => {
   const { t } = useTranslation();
   const [adultsCounter, setAdultsCounter] = useState(0);
@@ -22,7 +26,7 @@ const ReservationForm = ({ open, onClose }) => {
   const [checkOutDate, setCheckOutDate] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   // Zod form validation
-
+  console.log(checkInDate)
   const reservationSchema = z.object({
     fullname: z.string(),
     email: z.string().email({ message: "Invalid email address" }),
@@ -64,6 +68,7 @@ const ReservationForm = ({ open, onClose }) => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    console.log('Submited')
     const data = {
       fullname,
       email,
@@ -77,7 +82,7 @@ const ReservationForm = ({ open, onClose }) => {
 
     const validatedData = reservationSchema.safeParse(data);
 
-    console.log(validatedData.error)
+    console.log(validatedData.error);
     try {
       setIsLoading(true);
       const response = await api.post("/", validatedData);
@@ -114,7 +119,7 @@ const ReservationForm = ({ open, onClose }) => {
         progress: undefined,
         theme: "light",
       });
-    }finally {
+    } finally {
       setIsLoading(false);
     }
   };
@@ -125,42 +130,40 @@ const ReservationForm = ({ open, onClose }) => {
   };
 
   const contentStyle = {
-  padding: 50,
-  background: 'rgba(0, 0, 0, 0.05)',
-  color: 'rgba(0, 0, 0, 0.85)',
-  borderRadius: 4,
-};
-const content = <div style={contentStyle} />;
+    padding: 50,
+    background: "rgba(0, 0, 0, 0.05)",
+    color: "rgba(0, 0, 0, 0.85)",
+    borderRadius: 4,
+  };
+  const content = <div style={contentStyle} />;
+  
 
   return (
     <div>
       <Drawer
-        title={`Ecolodge Ksar Ghillane - ${t('reservation')}`}
+        title={`Ecolodge Ksar Ghillane - ${t("reservation")}`}
         closable={{ "aria-label": "Close Button" }}
         onClose={onClose}
         open={open}
-      > 
-
-      {
-        isLoading && (
+        
+      >
+        {isLoading && (
           <Spin tip="Loading" size="large">
-              {content}
+            {content}
           </Spin>
-        )
+        )}
 
-      }
-    
         {/* Form for reservation */}
         <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
-            <div className="space-y-2">
+          <div className="space-y-2">
             <label htmlFor="fullname" className="block text-sm font-semibold">
-               {t('fullName')}{" "}
+              {t("fullName")}{" "}
             </label>
             <Input
               id="fullname"
               name="fullname"
               type="text"
-              placeholder={t('enterFullName')}
+              placeholder={t("enterFullName")}
               required
               value={fullname}
               onChange={handleInputChange}
@@ -169,13 +172,13 @@ const content = <div style={contentStyle} />;
           </div>
           <div className="space-y-2">
             <label htmlFor="email" className="block text-sm font-semibold">
-              {t('emailAddress')}{" "}
+              {t("emailAddress")}{" "}
             </label>
             <Input
               id="email"
               name="email"
               type="email"
-              placeholder={t('enterEmailAddress')}
+              placeholder={t("enterEmailAddress")}
               required
               value={email}
               onChange={handleInputChange}
@@ -184,29 +187,31 @@ const content = <div style={contentStyle} />;
           </div>
           <div className="space-y-2">
             <label htmlFor="phone" className="block text-sm font-semibold">
-              {t('phoneNumber')}{" "}
+              {t("phoneNumber")}{" "}
             </label>
             <PhoneInput
-              country={'tn'}
-        value={phone}
-        onChange={(value) => setPhone(value)}
-        inputProps={{
-          name: 'phone',
-          required: true,
-          id: 'phone',
-        }}
-        inputClass="!w-full"
-        containerClass="!w-full"
-        enableSearch
+              country={"tn"}
+              value={phone}
+              onChange={(value) => setPhone(value)}
+              inputProps={{
+                name: "phone",
+                required: true,
+                id: "phone",
+              }}
+              inputClass="!w-full"
+              containerClass="!w-full"
+              enableSearch
             />
           </div>
           <Divider />
           <div className="space-y-2">
             <label htmlFor="checkin" className="block text-sm font-semibold">
-              {t('checkIn')} | {t('checkOut')}
+              {t("checkIn")} | {t("checkOut")}
             </label>
-            <DatePicker.RangePicker
+            {/* <DatePicker.RangePicker
+             multiple={true}
               disabledDate={disabledDate}
+              // value={[dayjs(checkInDate), dayjs(checkOutDate)]}
               value={
                 checkInDate && checkOutDate
                   ? [dayjs(checkInDate), dayjs(checkOutDate)]
@@ -221,14 +226,25 @@ const content = <div style={contentStyle} />;
                   setCheckOutDate(null);
                 }
               }}
-              className="w-full"
-            />
+className="w-full"
+            /> */}
+            <DateRangePicker
+    value={
+      checkInDate && checkOutDate
+        ? { from: new Date(checkInDate), to: new Date(checkOutDate) }
+        : { from: null, to: null }
+    }
+    onChange={(range) => {
+      setCheckInDate(range?.from || null);
+      setCheckOutDate(range?.to || null);
+    }}
+  />
           </div>
 
           {/* Room Type */}
           <div className="flex flex-col space-y-2">
             <label htmlFor="roomType" className="font-semibold">
-              {t('roomType')}
+              {t("roomType")}
             </label>
             <select
               onChange={(e) => setRoomType(e.target.value)}
@@ -236,14 +252,14 @@ const content = <div style={contentStyle} />;
               id=""
               className="w-full rounded border border-gray-300 focus:border-blue-400 outline-0 p-[6px] "
             >
-              <option value="STANDARD">{t('standard')}</option>
-              <option value="SUITE">{t('suite')}</option>
+              <option value="STANDARD">{t("standard")}</option>
+              <option value="SUITE">{t("suite")}</option>
             </select>
           </div>
 
-           <div className="flex flex-col space-y-2">
+          <div className="flex flex-col space-y-2">
             <label htmlFor="visitType" className="font-semibold">
-              {t('visitType')}
+              {t("visitType")}
             </label>
             <select
               // onChange={(e) => setRoomType(e.target.value)}
@@ -251,19 +267,19 @@ const content = <div style={contentStyle} />;
               id=""
               className="w-full rounded border border-gray-300 focus:border-blue-400 outline-0 p-[6px] "
             >
-              <option value="STANDARD">{t('restAndDiscovery')}</option>
-              <option value="SUITE">{t('adventureExpedition')}</option>
+              <option value="STANDARD">{t("restAndDiscovery")}</option>
+              <option value="SUITE">{t("adventureExpedition")}</option>
             </select>
           </div>
           {/* Counter for how many room and type standard or suite , number of adults and children */}
 
           <div>
             <label htmlFor="guests" className="block text-sm font-semibold">
-              {t('guests')}
+              {t("guests")}
             </label>
             <div className="flex flex-col space-y-4 my-4">
               <div className="flex items-center justify-between mx-0">
-                <h2>{t('adults')}</h2>
+                <h2>{t("adults")}</h2>
                 <div className="flex items-center space-x-2">
                   <PlusCircleIcon
                     onClick={handlePlusAdult}
@@ -277,7 +293,7 @@ const content = <div style={contentStyle} />;
                 </div>
               </div>
               <div className="flex items-center justify-between ">
-                <h2>{t('children')}</h2>
+                <h2>{t("children")}</h2>
                 <div className="flex items-center space-x-2">
                   <PlusCircleIcon
                     onClick={handlePlusChildren}
@@ -298,7 +314,7 @@ const content = <div style={contentStyle} />;
             disabled={isLoading}
             className="bg-[#000000] cursor-pointer text-white px-4 py-2 rounded-md transition-colors duration-200"
           >
-            {isLoading ? t('loading') : t('reserveNow')}
+            {isLoading ? t("loading") : t("reserveNow")}
           </button>
         </form>
       </Drawer>

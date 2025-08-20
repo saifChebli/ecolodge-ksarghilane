@@ -4,17 +4,17 @@ import { useEffect, useState } from "react";
 import ReservationForm from "./ReservationForm";
 
 function ScrollFollowingButton() {
-  const [top, setTop] = useState(500); // initial top position
+  // const [top, setTop] = useState(500); // initial top position
 
-  useEffect(() => {
-    const handleScroll = () => {
-      // Move button to follow scroll (add offset)
-      setTop(window.scrollY + 100);
-    };
+  // useEffect(() => {
+  //   const handleScroll = () => {
+  //     // Move button to follow scroll (add offset)
+  //     setTop(window.scrollY + 100);
+  //   };
 
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  //   window.addEventListener("scroll", handleScroll);
+  //   return () => window.removeEventListener("scroll", handleScroll);
+  // }, []);
    const [open, setOpen] = useState(false);
    
   
@@ -39,7 +39,7 @@ function ScrollFollowingButton() {
       style={{
         position: "fixed",
         bottom: "30px",
-        right: "60px",
+        right: "32px",
         border: "none",
         cursor: "pointer",
         transition: "width 0.3s ease, padding 0.3s ease",

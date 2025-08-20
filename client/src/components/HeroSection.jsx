@@ -46,7 +46,7 @@ const HeroSection = () => {
               initial={{ opacity: 0, y: -50 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1 }}
-              className="max-w-xl"
+              className="max-w-2xl"
             >
               <h1 className="text-5xl md:text-7xl font-extrabold leading-tight">
                 {t('unwindInDreamy')} <br /> {t('desertHaven')}
@@ -66,7 +66,7 @@ const HeroSection = () => {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 1, duration: 1 }}
-              className="flex justify-between items-center"
+              // className="flex justify-between items-center"
             >
               {/* <motion.button
                 whileHover={{ scale: 1.05 }}

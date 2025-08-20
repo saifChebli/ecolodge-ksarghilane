@@ -100,6 +100,7 @@ const Navbar = () => {
             <Link href="/blog" className="transition-colors">
               Our Blog
             </Link>
+          
             {/* <Link href="#experiences" className=" transition-colors">
               About Us
             </Link>
@@ -113,6 +114,9 @@ const Navbar = () => {
               An adventure
             </Link> */}
           </nav>
+            <div className="select-lng">
+                <LanguageSwitcher />
+            </div>
         </div>
       )}
     </div>
