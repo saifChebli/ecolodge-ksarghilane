@@ -1,7 +1,7 @@
 import prisma from "../db/prisma.js";
 
 export const generateReservationCode = async () => {
-  const currentYear = new Date().getFullYear(); // e.g. 2025
+  const currentYear = new Date().getFullYear(); 
 
   // Count how many reservations exist this year
   const count = await prisma.reservation.count({
@@ -16,5 +16,5 @@ export const generateReservationCode = async () => {
   // Pad the number to 4 digits
   const paddedNumber = String(count + 1).padStart(4, '0');
 
-  return `R-${currentYear}-${paddedNumber}`; // e.g. R-2025-0001
+  return `R-${currentYear}-${paddedNumber}`; 
 };
